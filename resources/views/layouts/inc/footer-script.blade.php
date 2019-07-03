@@ -23,6 +23,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
 
+    <!-- Custom scripts for this template -->
+    <script src="{{ asset('theme/js/creative.min.js')}}"></script>
+
   <script>
 
       $(document).ready(function() {
