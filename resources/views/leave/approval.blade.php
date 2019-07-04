@@ -21,66 +21,66 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">List</h6>
         </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Days</th>
-                                <th>Leave Type</th>
-                                <th>Year</th>
-                                <th>Duty Reliever</th>
-                                <th>Approval</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($leaves as $leave)
-                                @if ($leave->approval_id == auth()->user()->id and $leave->status == 'Pending')
-                                    <tr>
-                                        <td>
-                                            <a href="{{ route('leave.show', ['leave' =>$leave ]) }}" > {{ $leave->start_date }} </a>
-    
-                                            
-                                        </td>
-                                        <td> @include('leave.resume') </td>
-                                        <td>{{ $leave->days }}</td>
-                                        <td>
-                                            @foreach ($leaveTypes as $key => $value)
-                                                @if ($key == $leave->leave_type)
-                                                    {{ $value }}
-                                                @endif
-                                            @endforeach                                           
-                                        </td>
-                                        <td>{{ $leave->year}}</td>
-                                        <td>
-                                            @foreach ($users as $user)
-                                                @if ($user->id == $leave->duty_reliever)
-                                                    {{ $user->firstname }}
-                                                @endif
-                                            @endforeach                       
-                                        </td>
-                                        <td>
-                                            @foreach ($users as $user)
-                                                @if ($user->id == $leave->approval_id)
-                                                    {{ $user->firstname }}
-                                                @endif
-                                            @endforeach                                         
-                                        </td>
-                                        <td>{{$leave->status}}</td>
-                                    </tr>
-                                @else
-                                    
-                                @endif
-    
-                            @endforeach  
-                        </tbody>
-                    </table>
-                  {{ $leaves->render() }} 
-                </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Days</th>
+                            <th>Leave Type</th>
+                            <th>Year</th>
+                            <th>Duty Reliever</th>
+                            <th>Approval</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($leaves as $leave)
+                            @if ($leave->approval_id == auth()->user()->id and $leave->status == 'Pending')
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('leave.show', ['leave' =>$leave ]) }}" > {{ $leave->start_date }} </a>
+
+                                        
+                                    </td>
+                                    <td> @include('leave.resume') </td>
+                                    <td>{{ $leave->days }}</td>
+                                    <td>
+                                        @foreach ($leaveTypes as $key => $value)
+                                            @if ($key == $leave->leave_type)
+                                                {{ $value }}
+                                            @endif
+                                        @endforeach                                           
+                                    </td>
+                                    <td>{{ $leave->year}}</td>
+                                    <td>
+                                        @foreach ($users as $user)
+                                            @if ($user->id == $leave->duty_reliever)
+                                                {{ $user->firstname }}
+                                            @endif
+                                        @endforeach                       
+                                    </td>
+                                    <td>
+                                        @foreach ($users as $user)
+                                            @if ($user->id == $leave->approval_id)
+                                                {{ $user->firstname }}
+                                            @endif
+                                        @endforeach                                         
+                                    </td>
+                                    <td>{{$leave->status}}</td>
+                                </tr>
+                            @else
+                                
+                            @endif
+
+                        @endforeach  
+                    </tbody>
+                </table>
+                {{ $leaves->render() }} 
             </div>
-        </div>    
+        </div>
+    </div>    
  
 @endsection

@@ -1,24 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Leave Entries</h1>
-    @if (auth()->id() != 1)
-        <a href="{{route('leave.create')}}" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Apply</a>
-    @endif   
-</div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Leave Entries</h1>
+        @if (auth()->id() != 1)
+            <a href="{{route('leave.create')}}" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Apply</a>
+        @endif   
+    </div>
 
-<div class="col-12">
-    @if (session('status'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('status') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
-</div>
-
+    <div class="col-12">
+        @if (session('status'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -40,9 +39,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($leaves as $leave)
+                        @foreach ($leaves as $leave)
                             @if ($leave->user_id == auth()->id())
-                            <tr>
+                                <tr>
                                     <td>
                                         @if ($leave->status == 'Approved' or $leave->status == 'Pending')
                                             {{ $leave->start_date }}

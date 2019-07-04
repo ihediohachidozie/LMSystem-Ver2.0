@@ -28,22 +28,22 @@
 
   <script>
 
-      $(document).ready(function() {
-          $('#example').DataTable( {
-              "paging":   false,
-              "ordering": false,
-              "searching": false,
-              "info":     false,
-              dom: 'Bfrtip',
-              buttons: {
-                  buttons: [
-                      { extend: 'copy', className: 'btn btn-success' },
-                      { extend: 'excel', className: 'btn btn-primary' }
+    $(document).ready(function() {
+        $('#example').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "searching": false,
+            "info":     false,
+            dom: 'Bfrtip',
+            buttons: {
+                buttons: [
+                    { extend: 'copy', className: 'btn btn-success' },
+                    { extend: 'excel', className: 'btn btn-primary' }
 
-                  ]
-              },
-          });
-      });
+                ]
+            },
+        });
+    });
             
     // Add the following code if you want the name of the file appear on select
     $(".custom-file-input").on("change", function() {

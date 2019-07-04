@@ -35,8 +35,5 @@
                 {{ $users->render() }} 
             </div>
         </div>
-    </div>
-
-
-  
+    </div>  
 @endsection

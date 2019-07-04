@@ -2,10 +2,6 @@
 
 @section('content')
 
-  
- 
-
-
     <div class="col-lg-12">
         <a href="{{route('leave.index')}}" class="btn btn-lg btn-primary mb-2"><i class="fas fa-arrow-left fa-sm text-white-50"></i>Back</a>
         <!-- Circle Buttons -->
@@ -18,17 +14,13 @@
             
             <form method="post" action="{{route('leave.store')}}" autocomplete="off" class="user">
 
-                    @include('leave.form')
+                @include('leave.form')
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary btn-user btn-block">Save</button>
-                    </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Save</button>
                 </div>
             </form>
        </div>
     </div>
-
-      
-
   
 @endsection

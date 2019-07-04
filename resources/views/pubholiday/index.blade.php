@@ -30,30 +30,30 @@
                             <th>Created On</th>
                             <th colspan="2" class="text-center">Action</th>
                         </tr>
-                        </thead>
-                        <tbody>
-                              @foreach($publicholidays as $publicholiday)
-                                  <tr>
-                                      <td>{{$publicholiday->description}}</td>
-                                      <td class="text-center">{{$publicholiday->date}}</td>
-                                      <td class="text-center">{{$publicholiday->created_at->format('d-m-Y')}}</td>
-                                      <td class="text-center"><a href="{{ route('publicholiday.edit', ['publicholiday'=>$publicholiday]) }}"><i class="fas fa-edit" style="font-size:24px"></i></a></td>
-                                      <td class="text-center">
-                                          <form action="{{ route('publicholiday.destroy', ['publicholiday'=>$publicholiday]) }}" method="post">
-                                          @csrf
-                                          @method('DELETE')
-                                          <button type="submit" {{ auth()->id() != 1 ? 'disabled' : ''}}>
-                                              <i class="fas fa-trash" style="font-size:18px;color:red; border:0px;"></i>
-                                          </button>
-                                          </form>
-                                      </td>
-                                  </tr>
-                              @endforeach
-                          </tbody>
-                        </table>
-                        {{ $publicholidays->render() }}
-                      </div>
-                    </div>
-                  </div>
+                    </thead>
+                    <tbody>
+                        @foreach($publicholidays as $publicholiday)
+                            <tr>
+                                <td>{{$publicholiday->description}}</td>
+                                <td class="text-center">{{$publicholiday->date}}</td>
+                                <td class="text-center">{{$publicholiday->created_at->format('d-m-Y')}}</td>
+                                <td class="text-center"><a href="{{ route('publicholiday.edit', ['publicholiday'=>$publicholiday]) }}"><i class="fas fa-edit" style="font-size:24px"></i></a></td>
+                                <td class="text-center">
+                                    <form action="{{ route('publicholiday.destroy', ['publicholiday'=>$publicholiday]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" {{ auth()->id() != 1 ? 'disabled' : ''}}>
+                                        <i class="fas fa-trash" style="font-size:18px;color:red; border:0px;"></i>
+                                    </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $publicholidays->render() }}
+            </div>
+        </div>
+    </div>
 
 @endsection

@@ -58,11 +58,6 @@
         <!-- footer-script-->
         @include('layouts.inc.footer-script')
 
-        <script>
-            
-
-        </script>
-
 
     </body>
 

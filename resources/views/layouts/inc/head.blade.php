@@ -16,26 +16,22 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
 
 
-
-
-
-
 <!-- Custom styles for this template-->
 <link href="{{ asset('theme/css/sb-admin-2.min.css')}}" rel="stylesheet">
 
 <style>
-.bg-login-img {
-  background-image: url('../theme/img/sign-in.jpg');
-  background-repeat: no-repeat;
-}
+  .bg-login-img {
+    background-image: url('../theme/img/sign-in.jpg');
+    background-repeat: no-repeat;
+  }
 
-.bg-signup-img {
-  background-image: url('../theme/img/sign-up.jpg');
-  background-repeat: no-repeat;
-}
+  .bg-signup-img {
+    background-image: url('../theme/img/sign-up.jpg');
+    background-repeat: no-repeat;
+  }
 
-.bg-f-img {
-  background-image: url('../theme/img/bg-f.jpg');
-  background-repeat: no-repeat;
-}
+  .bg-f-img {
+    background-image: url('../theme/img/bg-f.jpg');
+    background-repeat: no-repeat;
+  }
 </style>
