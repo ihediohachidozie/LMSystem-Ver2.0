@@ -30,30 +30,31 @@
                             <th class="text-center">Staff Count</th>
                             <th colspan="2" class="text-center">Action</th>
                         </tr>
-                        </thead>
-                        <tbody>
-                              @foreach($categories as $category)
-                                  <tr>
-                                      <td>{{$category->category}}</td>
-                                      <td class="text-center">{{$category->days}}</td>
-                                      <td class="text-center">{{$category->users->count()}}</td>
-                                      <td class="text-center"><a href="{{ route('category.edit', ['category'=>$category]) }}"><i class="fas fa-edit" style="font-size:24px"></i></a></td>
-                                      <td class="text-center">
-                                          <form action="{{ route('category.destroy', ['category'=>$category]) }}" method="post">
-                                          @csrf
-                                          @method('DELETE')
-                                          <button type="submit" {{ auth()->id() != 1 ? 'disabled' : ''}}>
-                                              <i class="fas fa-trash" style="font-size:18px;color:red; border:0px;"></i>
-                                          </button>
-                                          </form>
-                                      </td>
-                                  </tr>
-                              @endforeach
-                          </tbody>
-                        </table>
-                        {{ $categories->render() }}
-                      </div>
-                    </div>
-                  </div>
+                    </thead>
+                    <tbody>
+                        @foreach($categories as $category)
+                            <tr>
+                                <td>{{$category->category}}</td>
+                                <td class="text-center">{{$category->days}}</td>
+                                <td class="text-center">{{$category->users->count()}}</td>
+                                <td class="text-center"><a href="{{ route('category.edit', ['category'=>$category]) }}"><i class="fas fa-edit" style="font-size:24px"></i></a></td>
+                                <td class="text-center">
+                                    <form action="{{ route('category.destroy', ['category'=>$category]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" {{ auth()->id() != 1 ? 'disabled' : ''}}>
+                                        <i class="fas fa-trash" style="font-size:18px;color:red; border:0px;"></i>
+                                    </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $categories->render() }}
+            </div>
+        </div>
+    </div>
+        
 
 @endsection
