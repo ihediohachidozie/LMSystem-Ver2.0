@@ -20,6 +20,7 @@ class LeaveController extends Controller
         $this->middleware('auth'); // locking all parts
     }
 
+    private $outs;
     /**
      * Display a listing of the resource.
      *
@@ -86,14 +87,32 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validatedData();
+
         if($this->checkLeavestatus($request->user_id))
         {
             if($this->sameDate($request->user_id, $request->start_date))
             {
                 if($this->outstandingDays($request->user_id, $request->year, $request->days))
                 {
-                    
-                    $saveLeave = Leave::create($this->validatedData());
+                    $this->getOutstanding($request->user_id, $request->year, $request->days);
+
+                    $leave = new Leave();
+
+                    $leave->start_date = request('start_date');
+                    $leave->days = request('days');
+                    $leave->outsdays = $this->outs;
+                    $leave->year = request('year');
+                    $leave->leave_type = request('leave_type');
+                    $leave->duty_reliever = request('duty_reliever');
+                    $leave->approval_id = request('approval_id');
+                    $leave->user_id = request('user_id');
+                    $leave->status = request('status');
+                    //dd($leave);
+
+                    $leave->save();
+
+                  //  $saveLeave = Leave::create($this->validatedData());
                     
                     return redirect('leave')->withStatus(__('Leave Application successfully saved.'));
                 }
@@ -170,11 +189,26 @@ class LeaveController extends Controller
     public function update(Request $request, Leave $leave)
     {
         //
+        $this->validatedData();
+
+        $this->getOutstanding($request->user_id, $request->year, $request->days);
+
+        $leave->start_date = request('start_date');
+        $leave->days = request('days');
+        $leave->outsdays = $this->outs;
+        $leave->year = request('year');
+        $leave->leave_type = request('leave_type');
+        $leave->duty_reliever = request('duty_reliever');
+        $leave->approval_id = request('approval_id');
+        $leave->user_id = request('user_id');
+        $leave->status = request('status');
+
         if($request->start_date == $request->oldstartdate)
         {
             if($this->outstandingDays4Update($request->user_id, $request->year, $request->days, $request->olddays))
             {
-                $leave->update($this->validatedData());
+          
+                $leave->update();
     
                 return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
             }
@@ -187,7 +221,7 @@ class LeaveController extends Controller
             {
                 if($this->outstandingDays4Update($request->user_id, $request->year, $request->days, $request->olddays))
                 {
-                    $leave->update($this->validatedData());
+                    $leave->update();
         
                     return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
                 }
@@ -201,12 +235,27 @@ class LeaveController extends Controller
         }
     }
 
+
+    private function getOutstanding($userid, $year, $curdays)
+    {
+        //get outstanding days if any
+        $outsday = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '2'])->orderBy('id', 'desc')->pluck('outsdays')->first();
+
+        // approved days
+        $approved_days = User::find($userid)->category->days;
+
+        $this->outs = $outsday ? $outsday - $curdays : $approved_days - $curdays;
+
+        return $this->outs;
+    }
+
     // data validation method..
     private function validatedData()
     {
        return request()->validate([
             'start_date' => 'required',
             'days' => 'required|max:30|min:1',
+            
             'year' => 'required|numeric|min:2006|max:2050',
             'leave_type' => 'required',
             'duty_reliever' => 'required',
@@ -214,6 +263,19 @@ class LeaveController extends Controller
             'user_id' => 'required',
             'status' => 'required',
         ]);
+
+        // 'outsday => 'required|min:' .$outsday
+        
+        // $last_row = DB::table('products')->orderBy('id', 'desc')->first();
+
+        // $outsday = Leave::where(['user_id' => $id], ['year' => $year])->orderBy('id', 'desc')->first();
+        // $result = $outsday->outsdays;
+
+        // $outsday = Leave::where(['user_id' => $id], ['year' => $year])->orderBy('id', 'desc')->pluck('outsday')->first();
+
+        // $outsday = DB::table('table_name')->select('col_name');
+
+
     }
 
     /**
@@ -249,12 +311,26 @@ class LeaveController extends Controller
      // Outstanding leave days for a particular year...
      private function outstandingDays($userid, $year, $curdays)
      {
- 
-         $days_utilized = Leave::where(['user_id' => $userid, 'year' => $year])->groupBy('year')->sum('days');
- 
-         $approved_days = User::find($userid)->category->days;
- 
-         return $result = $approved_days >= ($days_utilized + $curdays) ? true : false;
+
+        // days utilized
+        $days_utilized = Leave::where(['user_id' => $userid, 'year' => $year])->groupBy('year')->sum('days');
+
+        // approved days
+        $approved_days = User::find($userid)->category->days;
+        
+        // outstanding days
+        $outsday = Leave::where(['user_id' => $userid, 'year' => $year])->orderBy('id', 'desc')->pluck('outsdays')->first();
+        
+        if($outsday != null)
+        {
+            $result = ( $outsday >= $curdays ) ? true : false;
+        }
+        else
+        {
+            $result = ($approved_days >=  $curdays) ? true : false;
+        }
+        
+        return $result;
      }
  
      // Outstanding leave days for update method
@@ -263,9 +339,24 @@ class LeaveController extends Controller
  
          $days_utilized = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '2'])->groupBy('year')->sum('days');
  
+         // approved days
          $approved_days = User::find($userid)->category->days;
+
+        // outstanding days
+        $outsday = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '2'])->orderBy('id', 'desc')->pluck('outsdays')->first();
+        
+        if($outsday != null)
+        {
+            $result = ( $outsday >= $curdays ) ? true : false;
+        }
+        else
+        {
+            $result = ($approved_days >=  $curdays) ? true : false;
+        }
+        
+        return $result;
  
-         return $result = $approved_days >= ($days_utilized + $curdays) ? true : false;
+        //return $result = $approved_days >= ($days_utilized + $curdays) ? true : false;
      }
  
      //leave summary method
@@ -274,6 +365,9 @@ class LeaveController extends Controller
          if(User::find(auth()->id())->category != null)
          {
              $days = User::findOrfail(auth()->user()->id)->category->days;
+
+             
+
              $leaveSummaries = DB::table('leaves')
              ->select('year', DB::raw('sum(days) as days'))
              ->where(['user_id'=> auth()->user()->id, 'status' => 2])

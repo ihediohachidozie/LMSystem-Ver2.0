@@ -17,6 +17,7 @@ class CreateLeavesTable extends Migration
             $table->bigIncrements('id');
             $table->string('start_date');
             $table->integer('days');
+            $table->integer('outsdays');
             $table->string('leave_type');
             $table->integer('year');
             $table->integer('duty_reliever');

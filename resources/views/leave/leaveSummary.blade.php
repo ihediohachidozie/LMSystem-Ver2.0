@@ -26,7 +26,7 @@
                             <tr class="text-center">
                                 <td>{{$key}} </td>
                                 <td>{{$value}}</td>
-                                <td>{{$days - $value}}</td>
+                                <td>@include('leave.outs')</td>
                             </tr>  
                         @endforeach
                     </tbody>

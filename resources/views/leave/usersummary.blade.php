@@ -26,7 +26,7 @@
                             <tr class="text-center">
                                 <td>{{$key}} </td>
                                 <td>{{$value}}</td>
-                                <td>{{$user->category->days - $value}}</td>
+                                <td>@include('leave.outs1')</td>
                             </tr>  
                         @endforeach
                     </tbody>
