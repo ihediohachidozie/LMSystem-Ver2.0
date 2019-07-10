@@ -112,7 +112,11 @@ class LeaveController extends Controller
 
                     $leave->save();
 
-                  //  $saveLeave = Leave::create($this->validatedData());
+                    $user = User::Find(auth()->id());
+                    
+                    $email = User::Find($leave->approval_id)->pluck('email');
+
+                    Mail::to($email)->send(new LeaveApprovalMail($user));
                     
                     return redirect('leave')->withStatus(__('Leave Application successfully saved.'));
                 }
@@ -209,6 +213,12 @@ class LeaveController extends Controller
             {
           
                 $leave->update();
+
+                $user = User::Find(auth()->id());
+                    
+                $email = User::Find($leave->approval_id)->pluck('email');
+
+                Mail::to($email)->send(new LeaveApprovalMail($user));
     
                 return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
             }

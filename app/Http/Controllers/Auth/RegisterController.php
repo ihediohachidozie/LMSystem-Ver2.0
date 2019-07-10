@@ -6,6 +6,7 @@ use App\User;
 use App\Department;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -86,5 +87,7 @@ class RegisterController extends Controller
             'department_id' => $data['department_id'],
             'password' => Hash::make($data['password']),
         ]);
+        // $header = 'register';
+        Mail::to('hr.cal@ecmterminals.com')->send(new UserRegisterMail($data));
     }
 }
