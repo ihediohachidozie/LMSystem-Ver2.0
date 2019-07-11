@@ -78,7 +78,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
@@ -88,6 +88,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         // $header = 'register';
-        Mail::to('hr.cal@ecmterminals.com')->send(new UserRegisterMail($data));
+           
+        Mail::to('hr.cal@ecmterminals.com')->send(new UserRegisterMail($user));
+
+        return $user;
     }
 }
