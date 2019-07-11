@@ -25,11 +25,11 @@ class UserRegisterMail extends Mailable
 
     /**
      * Build the message.
-     *
+     *   
      * @return $this
      */
     public function build()
     {
-        return $this->from('test@test.com')->subject('User Registration')->view('email.register');
+        return $this->from($this->user->email)->subject('User Registration')->view('email.register');
     }
 }

@@ -8,6 +8,8 @@ use DB;
 use App\PublicHoliday;
 use App\Department;
 use App\Category;
+use App\Mail\LeaveApprovalMail;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 
@@ -114,7 +116,7 @@ class LeaveController extends Controller
 
                     $user = User::Find(auth()->id());
                     
-                    $email = User::Find($leave->approval_id)->pluck('email');
+                    $email = User::where('id', $leave->approval_id)->pluck('email');
 
                     Mail::to($email)->send(new LeaveApprovalMail($user));
                     
@@ -216,7 +218,7 @@ class LeaveController extends Controller
 
                 $user = User::Find(auth()->id());
                     
-                $email = User::Find($leave->approval_id)->pluck('email');
+                $email = User::where('id', $leave->approval_id)->pluck('email');
 
                 Mail::to($email)->send(new LeaveApprovalMail($user));
     
@@ -232,6 +234,12 @@ class LeaveController extends Controller
                 if($this->outstandingDays4Update($request->user_id, $request->year, $request->days, $request->olddays))
                 {
                     $leave->update();
+
+                    $user = User::Find(auth()->id());
+                    
+                    $email = User::where('id', $leave->approval_id)->pluck('email');
+
+                    Mail::to($email)->send(new LeaveApprovalMail($user));
         
                     return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
                 }

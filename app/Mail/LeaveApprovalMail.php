@@ -10,17 +10,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class LeaveApprovalMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $data;
+    public $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($user)
     {
         //
-        $this->data = $data;
+        $this->user = $user;
     }
 
     /**
@@ -30,9 +30,6 @@ class LeaveApprovalMail extends Mailable
      */
     public function build()
     {
-        return $this->from($this->data->email)
-                    ->subject('Leave Approval Request')
-                    ->view('email.approval')
-                    ->with('data', $this->data);
+        return $this->from($this->user->email)->subject('Leave Approval Request')->view('email.approval');
     }
 }
