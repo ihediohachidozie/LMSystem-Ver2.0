@@ -114,11 +114,11 @@ class LeaveController extends Controller
 
                     $leave->save();
 
-                    $user = User::Find(auth()->id());
+                    $userdata = User::Find(auth()->id());
                     
                     $email = User::where('id', $leave->approval_id)->pluck('email');
 
-                    Mail::to($email)->send(new LeaveApprovalMail($user));
+                    Mail::to($email)->send(new LeaveApprovalMail($userdata));
                     
                     return redirect('leave')->withStatus(__('Leave Application successfully saved.'));
                 }
@@ -216,11 +216,11 @@ class LeaveController extends Controller
           
                 $leave->update();
 
-                $user = User::Find(auth()->id());
+                $userdata = User::Find(auth()->id());
                     
                 $email = User::where('id', $leave->approval_id)->pluck('email');
 
-                Mail::to($email)->send(new LeaveApprovalMail($user));
+                Mail::to($email)->send(new LeaveApprovalMail($userdata));
     
                 return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
             }
@@ -235,11 +235,11 @@ class LeaveController extends Controller
                 {
                     $leave->update();
 
-                    $user = User::Find(auth()->id());
+                    $userdata = User::Find(auth()->id());
                     
                     $email = User::where('id', $leave->approval_id)->pluck('email');
 
-                    Mail::to($email)->send(new LeaveApprovalMail($user));
+                    Mail::to($email)->send(new LeaveApprovalMail($userdata));
         
                     return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
                 }

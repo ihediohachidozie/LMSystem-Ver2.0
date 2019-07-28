@@ -154,9 +154,10 @@ class ProfileController extends Controller
             auth()->user()->update([
                 'image' => request()->image->store('uploads', 'public'),
             ]);
+            //dd(auth()->user()->image);
 
-            $image = Image::make(public_path('storage/'. auth()->user()->image))->fit(300, 300);
-
+            $image = Image::make(('storage/'. auth()->user()->image))->fit(300, 300);
+               // dd(public_path('storage/'. auth()->user()->image));
             $image->save();
         }
     }

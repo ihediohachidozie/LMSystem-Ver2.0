@@ -57,12 +57,34 @@
         </div>
         <div class="col-lg-8 align-self-baseline">
           <p class="text-white-75 font-weight-light mb-5"> Billy Cox</p>
-          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#">Find Out More</a>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#" data-toggle="modal" data-target="#exampleModal">Find Out More</a>
+          <!-- Button trigger modal -->
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Developer Info</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body text-left">
+                  <p><i class='fas fa-smile' style='font-size:18px;color:blue'></i> Chidozie Ihedioha</p> 
+                  <p><i class='fas fa-phone' style='font-size:18px;color:blue'></i> 08067709490, 09090693064.</p>
+                  <p> <i class='fas fa-envelope' style='font-size:18px;color:blue'></i> ihediohachidozie@gmail.com </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </header>
-
+<!-- Find out more to show developer -->
  
   <!-- Footer -->
   <footer class="bg-light py-5">
