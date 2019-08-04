@@ -9,6 +9,7 @@ use App\PublicHoliday;
 use App\Department;
 use App\Category;
 use App\Mail\LeaveApprovalMail;
+use App\Mail\ConfirmRequest;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class LeaveController extends Controller
     public function index()
     {
         //
-        $leaves = Leave::orderBy('id', 'desc')->paginate(5);
+        $leaves = Leave::orderBy('id', 'desc')->paginate(10);
 
         $leaveTypes = $this->leaveType();
 
@@ -118,7 +119,7 @@ class LeaveController extends Controller
                     
                     $email = User::where('id', $leave->approval_id)->pluck('email');
 
-                    Mail::to($email)->send(new LeaveApprovalMail($userdata));
+                    Mail::to($email)->queue(new LeaveApprovalMail($userdata));
                     
                     return redirect('leave')->withStatus(__('Leave Application successfully saved.'));
                 }
@@ -174,14 +175,37 @@ class LeaveController extends Controller
     // leave approval method
     public function approveleave(Request $request, $leave)
     {
+
         $data = request()->validate([
             'status' => 'sometimes',
+           
         ]);
 
+        $comment = ($request->input('comment'));
+        
         $leave = Leave::findorfail($request->leave);
+      
         $leave->update($data);
 
-        return redirect('leave.approval')->withStatus(__('Action completed.'));
+        // send an email to user & admin...
+
+        $userdata = User::Find($leave->approval_id);
+
+        $userdata1 = User::Find($leave->user_id);
+ 
+        Mail::to($userdata1->email)->cc('hr.cal@ecmterminals.com')->queue(new ConfirmRequest($userdata, $leave, $comment));
+
+        if(auth()->id() == 1)
+        {
+            return redirect('leave.staffleaveentry')->withStatus(__('Action completed.'));
+
+        }else{
+
+            return redirect('leave.approval')->withStatus(__('Action completed.'));
+            
+        }
+
+        
     }
 
 
@@ -220,7 +244,7 @@ class LeaveController extends Controller
                     
                 $email = User::where('id', $leave->approval_id)->pluck('email');
 
-                Mail::to($email)->send(new LeaveApprovalMail($userdata));
+                Mail::to($email)->queue(new LeaveApprovalMail($userdata));
     
                 return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
             }
@@ -239,7 +263,7 @@ class LeaveController extends Controller
                     
                     $email = User::where('id', $leave->approval_id)->pluck('email');
 
-                    Mail::to($email)->send(new LeaveApprovalMail($userdata));
+                    Mail::to($email)->queue(new LeaveApprovalMail($userdata));
         
                     return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
                 }
@@ -257,7 +281,7 @@ class LeaveController extends Controller
     private function getOutstanding($userid, $year, $curdays)
     {
         //get outstanding days if any
-        $outsday = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '2'])->orderBy('id', 'desc')->pluck('outsdays')->first();
+        $outsday = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '3'])->orderBy('id', 'desc')->pluck('outsdays')->first();
 
         // approved days
         $approved_days = User::find($userid)->category->days;
@@ -311,7 +335,7 @@ class LeaveController extends Controller
      public function approval()
      {
          
-         $leaves = Leave::orderBy('id', 'desc')->paginate(5);
+         $leaves = Leave::leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname', 'leaves.*')->orderBy('id', 'desc')->paginate(8);
          $leaveTypes = $this->leaveType();
          $users = User::all();
          $publicholidays = PublicHoliday::all()->pluck('date');
@@ -355,13 +379,13 @@ class LeaveController extends Controller
      private function outstandingDays4Update($userid, $year, $curdays, $oldday)
      {
  
-         $days_utilized = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '2'])->groupBy('year')->sum('days');
+         $days_utilized = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '3'])->groupBy('year')->sum('days');
  
          // approved days
          $approved_days = User::find($userid)->category->days;
 
         // outstanding days
-        $outsday = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '2'])->orderBy('id', 'desc')->pluck('outsdays')->first();
+        $outsday = Leave::where(['user_id' => $userid, 'year' => $year, 'status' => '3'])->orderBy('id', 'desc')->pluck('outsdays')->first();
         
         if($outsday != null)
         {
@@ -388,7 +412,7 @@ class LeaveController extends Controller
 
              $leaveSummaries = DB::table('leaves')
              ->select('year', DB::raw('sum(days) as days'))
-             ->where(['user_id'=> auth()->user()->id, 'status' => 2])
+             ->where(['user_id'=> auth()->user()->id, 'status' => 3])
              ->groupBy('year')
              ->pluck('days', 'year');
       
@@ -406,7 +430,7 @@ class LeaveController extends Controller
          //$result = Leave::where(['user_id' => $staffid, 'status' => 0])->orwhere('status', 1)->count();
          $result = DB::table('leaves')->where([
              ['user_id', '=', $userid],
-             ['status', '<>', '2']
+             ['status', '<>', '3']
          ])->count();
  
          return $result == 0 ? true : false ;
@@ -414,7 +438,7 @@ class LeaveController extends Controller
  
      public function staffleaveentry()
      {
-         $leaves = Leave::where('status', '2')->orderBy('id', 'desc')->paginate(5);
+         $leaves = Leave::where('status', '3')->orderBy('id', 'desc')->paginate(5);
  
          $leaveTypes = $this->leaveType();
  
@@ -428,8 +452,8 @@ class LeaveController extends Controller
      }
  
      public function staffhistory($id)
-     {
-         $user = User::find($id);
+     { // dd('I m here!');
+         //$user = User::find($id);
  
          $users = User::all();
  
@@ -437,9 +461,11 @@ class LeaveController extends Controller
  
          $publicholidays = PublicHoliday::all()->pluck('date');
  
-         $leaves = DB::table('leaves')->where(['user_id', $id],['status', '2'])->orderBy('year', 'DESC')->paginate(10);
-         
-         return view('leave.userhistory', compact('leaves', 'user', 'users', 'publicholidays', 'leaveTypes'));
+         $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.*')->where([['user_id', '=', $id],['status', '=', '3']])->orderBy('year', 'DESC')->paginate(5);
+
+         $username = User::find($id);
+        
+         return view('leave.userhistory', compact('leaves', 'users', 'publicholidays', 'leaveTypes', 'username'));
   
      }
  
@@ -461,7 +487,7 @@ class LeaveController extends Controller
          $lsum = DB::table('leaves')
          ->select('year', DB::raw('sum(days) as days'))
          ->where('user_id', $id)
-         ->where('status', '2')
+         ->where('status', '3')
          ->groupBy('year')
          ->pluck('days', 'year');
  
@@ -470,8 +496,23 @@ class LeaveController extends Controller
  
      public function getUser()
      {
-       //  return 'Hello world';
-         $users = User::paginate(10);
+         // all users except admin
+         $users = User::where('id', '<>', 1)->paginate(8);
          return view('leave.user', compact('users'));
      }
+
+     public function allUsersum()
+     {
+         // retrieve all users' summmary for HOD
+       $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.year','leaves.days', 'leaves.user_id', DB::raw('sum(days) as days, sum(outsdays) as odays'))->where('status', '=', 3)->groupBy('year', 'user_id')->paginate(5);
+       return view('leave.allsummary', compact('leaves'));
+     }
+
+        /*      public function chgstatus(Leave $leave)
+            {
+                dd('im here');
+                $leaveTypes = $this->leaveType();
+                $users = User::all();
+                return view('leave.changestatus', compact('leave', 'leaveTypes', 'users'));
+            } */
 }

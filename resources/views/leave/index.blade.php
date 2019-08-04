@@ -4,7 +4,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Leave Entries</h1>
         @if (auth()->id() != 1)
-            <a href="{{route('leave.create')}}" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Apply</a>
+            <a href="{{route('leave.create')}}" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"> Apply</a>
         @endif   
     </div>
 
@@ -25,11 +25,12 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Resumption Date</th>
                             <th>Days</th>
                             <th>Leave Type</th>
                             <th>Year</th>
@@ -43,17 +44,19 @@
                             @if ($leave->user_id == auth()->id())
                                 <tr>
                                     <td>
-                                        @if ($leave->status == 'Approved' or $leave->status == 'Pending')
+                                        @if ($leave->status == 'Pending' or $leave->status == 'Approved')
                                             {{ $leave->start_date }}
                                             
-                                        @else
+                                        @else 
                                             
                                             <a href="{{ route('leave.edit', ['leave' =>$leave ]) }}" > {{ $leave->start_date }} </a>
                                             
                                         @endif
+                                    
 
                                         
                                     </td>
+                                    <td> @include('leave.enddate') </td>
                                     <td> @include('leave.resume') </td>
                                     <td>{{ $leave->days }}</td>
                                     <td>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-  <a href="{{route('department.index')}}" class="btn btn-lg btn-primary"><i class="fas fa-arrow-left fa-sm text-white-50"></i>Back</a>
+  <a href="{{route('department.index')}}" class="btn btn-lg btn-primary">Back</a>
  
 
   <div class="row justify-content-center">

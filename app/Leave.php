@@ -11,9 +11,10 @@ class Leave extends Model
     public function getStatusAttribute($attribute)
     {
         return [
-            0 => 'Pending',
-            1 => 'Rejected',
-            2 => 'Approved'
+            0 => 'Open',
+            1 => 'Pending',
+            2 => 'Rejected',
+            3 => 'Approved'
         ][$attribute];
     }  
 

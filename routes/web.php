@@ -56,6 +56,7 @@ Route::get('leave.approval', 'LeaveController@approval')->name('leave.approval')
 Route::get('leave.leaveSummary', 'LeaveController@leaveSummary')->name('leave.leaveSummary');
 Route::put('leave/{leave}', 'LeaveController@approveleave')->name('leave.approveleave');
 Route::get('leave.staffleaveentry', 'LeaveController@staffleaveentry')->name('staffleaveentry');
+//Route::put('leave/{leave}', 'LeaveController@chgstatus')->name('leave.chgstatus');
 
 
 // get user individual leave entries and summary by admin
@@ -63,3 +64,4 @@ Route::get('leave.staffleaveentry', 'LeaveController@staffleaveentry')->name('st
 Route::get('leave.getUser', 'LeaveController@getUser')->name('leave.getUser');
 Route::get('leave/staffhistory/{id}', 'LeaveController@staffhistory')->name('leave.staffhistory');
 Route::get('leave/staffsummary/{id}', 'LeaveController@staffsummary')->name('leave.staffsummary');
+Route::get('leave.allUsersum', 'LeaveController@allUsersum')->name('leave.allUsersum');

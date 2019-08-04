@@ -71,7 +71,7 @@
         </div>
 
     </div> 
-    <input type="hidden" name="status" id="status" value="{{$leave->stautus == null ? 0 : $leave->stautus }}"> 
+    <input type="hidden" name="status" id="status" value="{{$leave->stautus == null ? 1 : $leave->stautus }}"> 
     <input type="hidden" name="user_id" id="user_id" value="{{ auth()->id() }}">
     <input type="hidden" name="outsdays" id="outsdays" >
 </div>

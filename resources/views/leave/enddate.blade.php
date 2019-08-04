@@ -15,7 +15,7 @@
         array_push($date_array, $value);
     }
    
-    while ($a <= $leave->days + 1) 
+    while ($a <= $leave->days) 
      {
         $date->modify('+1 day');
 
@@ -27,7 +27,6 @@
             }    
         } 
      } 
-  
 
     echo date_format($date,"Y-m-d");
 

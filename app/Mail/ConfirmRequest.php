@@ -7,20 +7,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class LeaveApprovalMail extends Mailable
+class ConfirmRequest extends Mailable
 {
     use Queueable, SerializesModels;
-    public $userdata;
+    public $userdata, $leave, $comment;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userdata)
+    public function __construct($userdata, $leave, $comment)
     {
         //
         $this->userdata = $userdata;
+        $this->leave = $leave;
+        $this->comment = $comment;
     }
 
     /**
@@ -30,7 +32,7 @@ class LeaveApprovalMail extends Mailable
      */
     public function build()
     {
-       // return $this->from($this->userdata->email)->subject('LMSystem App: Leave Approval Request')->view('email.approval');
-       return $this->from("test@test.com")->subject('LMSystem App: Leave Approval Request')->view('email.approval');
+         // return $this->from($this->userdata->email)->subject('LMSystem App: Leave Approval Confirmation')->view('email.confirm');
+       return $this->from("test@test.com")->subject('LMSystem App: Leave Approval Confirmation')->view('email.confirm');
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="col-lg-12">
-        <a href="{{route('leave.index')}}" class="btn btn-lg btn-primary mb-2"><i class="fas fa-arrow-left fa-sm text-white-50"></i>Back</a>
+        <a href="{{route('leave.index')}}" class="btn btn-lg btn-primary mb-2">Back</a>
         <!-- Circle Buttons -->
      <div class="card shadow mb-4">
        <div class="card-header py-3">

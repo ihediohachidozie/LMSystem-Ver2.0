@@ -6,6 +6,8 @@ use App\User;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\UserActivation;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -102,6 +104,10 @@ class UsersController extends Controller
                     'permission' => 'sometimes',
                 ]);
                 $user->update($data);
+
+                // send an email to the user
+ 
+                Mail::to($user->email)->queue(new UserActivation($user));
     
                 return redirect('users')->withStatus(__('User data successfully updated.'));
             }

@@ -7,31 +7,30 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserRegisterMail extends Mailable
+class UserActivation extends Mailable
 {
     use Queueable, SerializesModels;
-    public $userdata;
+    public $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userdata)
+    public function __construct($user)
     {
         //
-        $this->userdata = $userdata;
+        $this->user = $user;
     }
 
     /**
      * Build the message.
-     *   
+     *
      * @return $this
      */
     public function build()
     {
-        //return $this->from($this->userdata->email)->subject('LMSystem App: User Registration')->view('email.register');
-        return $this->from("test@test.com")->subject('LMSystem App: User Registration')->view('email.register');
-        
+         // return $this->from($this->user->email)->subject('LMSystem App: User Activated')->view('email.activate');
+       return $this->from("test@test.com")->subject('LMSystem App: User Activated')->view('email.activate');
     }
 }

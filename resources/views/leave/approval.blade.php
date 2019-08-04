@@ -23,37 +23,48 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="example1" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Name</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Resumption Date</th>
                             <th>Days</th>
-                            <th>Leave Type</th>
+                            {{-- <th>Leave Type</th> --}}
                             <th>Year</th>
                             <th>Duty Reliever</th>
-                            <th>Approval</th>
+                            {{-- <th>Approval</th> --}}
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($leaves as $leave)
-                            @if ($leave->approval_id == auth()->user()->id and $leave->status == 'Pending')
+                            @if ($leave->approval_id == auth()->user()->id and $leave->status <> 'Open')
                                 <tr>
+                                    <td>{{$leave->firstname}}</td>
                                     <td>
-                                        <a href="{{ route('leave.show', ['leave' =>$leave ]) }}" > {{ $leave->start_date }} </a>
+                                        @if ($leave->status == 'Pending')
+                                        
+                                           <a href="{{ route('leave.show', ['leave' =>$leave ]) }}" > {{ $leave->start_date }} </a>  
+                                            
+                                        @else
+                                            {{ $leave->start_date }}   
+                                        @endif
+                                        
 
                                         
                                     </td>
+                                    <td> @include('leave.enddate') </td>
                                     <td> @include('leave.resume') </td>
                                     <td>{{ $leave->days }}</td>
-                                    <td>
+{{--                                     <td>
                                         @foreach ($leaveTypes as $key => $value)
                                             @if ($key == $leave->leave_type)
                                                 {{ $value }}
                                             @endif
                                         @endforeach                                           
-                                    </td>
+                                    </td> --}}
                                     <td>{{ $leave->year}}</td>
                                     <td>
                                         @foreach ($users as $user)
@@ -62,13 +73,13 @@
                                             @endif
                                         @endforeach                       
                                     </td>
-                                    <td>
+                   {{--                  <td>
                                         @foreach ($users as $user)
                                             @if ($user->id == $leave->approval_id)
                                                 {{ $user->firstname }}
                                             @endif
                                         @endforeach                                         
-                                    </td>
+                                    </td> --}}
                                     <td>{{$leave->status}}</td>
                                 </tr>
                             @else

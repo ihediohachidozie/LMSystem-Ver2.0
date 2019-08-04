@@ -2,7 +2,7 @@
 @section('content')
 
   <div>
-    <a href="{{route('department.index')}}" class="btn btn-lg btn-primary"><i class="fas fa-arrow-left fa-sm text-white-50"></i>Back</a>
+    <a href="{{route('department.index')}}" class="btn btn-lg btn-primary">Back</a>
   </div>
  
   <div class="row justify-content-center">

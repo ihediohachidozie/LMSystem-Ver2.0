@@ -39,11 +39,12 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Components:</h6>
           <a class="collapse-item" href="{{ route('department.index')}}">Departments</a>
-          <a class="collapse-item" href="{{ route('category.index')}}">Staff Category</a>
+          <a class="collapse-item" href="{{ route('category.index')}}">Users Category</a>
           <a class="collapse-item" href="{{ route('publicholiday.index')}}">Public Holidays</a>
           <a class="collapse-item" href="{{ route('users.index')}}">Users</a>
           <a class="collapse-item" href="{{ route('staffleaveentry')}}">Approved Leaves</a>
-          <a class="collapse-item" href="{{ route('leave.getUser')}}">Staff Leave</a>
+          <a class="collapse-item" href="{{ route('leave.getUser')}}">Users Leave</a>
+          <a class="collapse-item" href="{{ route('leave.allUsersum')}}">All Summary</a>
         </div>
       </div>
     </li>
@@ -60,7 +61,8 @@
   <!-- Heading -->
 
   <!-- Nav Item - Pages Collapse Menu -->
-  <li class="nav-item">
+  @if (auth()->id() != 1)()
+    <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
       <i class="fas fa-fw fa-folder"></i>
       <span>Administration</span>
@@ -70,14 +72,26 @@
         <h6 class="collapse-header">Functions:</h6>
         <a class="collapse-item" href="{{ route('leave.index')}}">Leave Application</a>
         <a class="collapse-item" href="{{ route('leave.leaveSummary')}}">Summary</a>
+        {{-- <a class="collapse-item" href="#">Messages</a> --}}
         
-        <a class="collapse-item" href="{{ route('leave.approval')}}">Approval Requests</a>
+        @if (auth()->user()->permission == 'on')
+            <a class="collapse-item" href="{{ route('leave.approval')}}">Approval Requests</a>
+            <a class="collapse-item" href="{{ route('leave.allUsersum')}}">All Summary</a>
+
+        @endif
+        
+
       </div>
     </div>
   </li>
 
-  <!-- Divider -->
+    <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
+      
+  @endif
+
+
+
 
   <!-- Sidebar Toggler (Sidebar) -->
   <div class="text-center d-none d-md-inline">

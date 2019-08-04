@@ -3,20 +3,22 @@
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Leave Entries</h1>
-       
+      
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="example1" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th colspan="2" class="text-center">Action</th>
+                           {{--  <th colspan="2" class="text-center">Action</th> --}}
+                           <th></th>
+                           <th></th>
 
                         </tr>
                     </thead>
@@ -29,7 +31,8 @@
                                     <td class="text-center"><a href="{{ route('leave.staffsummary',[$user->id]) }}" class="btn btn-primary btn-sm"> Summary</a></td>
                                 </tr>
                             {{--  @endif    --}}                            
-                        @endforeach  
+                        @endforeach 
+
                     </tbody>
                 </table>
                 {{ $users->render() }} 
