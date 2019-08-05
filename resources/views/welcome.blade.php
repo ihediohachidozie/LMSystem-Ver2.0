@@ -88,8 +88,10 @@
  
   <!-- Footer -->
   <footer class="bg-light py-5">
-    <div class="container">
-      <div class="small text-center text-muted">Copyright &copy; {{ now()->year}} - De Royce Solutions</div>
+    <div class="container text-center">
+      {{-- div class="small text-center text-muted">Copyright &copy; {{ now()->year}} - De Royce Solutions</div> --}}
+        <span data-toggle="tooltip" data-placement="right" title="*** Ihedioha Chidozie | +234 (0)806 770 9490 ***" class="font-weight-bold">
+          Copyright &copy; {{ now()->year}} </span> 
     </div>
   </footer>
 
