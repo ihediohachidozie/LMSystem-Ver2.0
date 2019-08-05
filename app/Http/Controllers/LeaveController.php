@@ -178,6 +178,7 @@ class LeaveController extends Controller
 
         $data = request()->validate([
             'status' => 'sometimes',
+            'comment' => 'sometimes',
            
         ]);
 

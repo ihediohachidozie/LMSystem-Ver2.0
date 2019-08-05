@@ -24,6 +24,7 @@ class CreateLeavesTable extends Migration
             $table->integer('approval_id');
             $table->integer('user_id');
             $table->integer('status');
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }
