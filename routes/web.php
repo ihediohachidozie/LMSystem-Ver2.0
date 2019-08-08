@@ -65,3 +65,4 @@ Route::get('leave.getUser', 'LeaveController@getUser')->name('leave.getUser');
 Route::get('leave/staffhistory/{id}', 'LeaveController@staffhistory')->name('leave.staffhistory');
 Route::get('leave/staffsummary/{id}', 'LeaveController@staffsummary')->name('leave.staffsummary');
 Route::get('leave.allUsersum', 'LeaveController@allUsersum')->name('leave.allUsersum');
+Route::get('leave.allUsersumAp', 'LeaveController@allUsersumAp')->name('leave.allUsersumAp');

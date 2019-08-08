@@ -39,7 +39,7 @@
         $('#example').DataTable( {
             "paging":   false,
             "ordering": false,
-            "searching": false,
+            "searching": true,
             "info":     false,
             dom: 'Bfrtip',
             buttons: {
@@ -106,7 +106,7 @@
         $('#example3').DataTable( {
             "paging":   false,
             "ordering": false,
-            "searching": false,
+           // "searching": false,
             "info":     false,
             dom: 'Bfrtip',
             buttons: {
@@ -114,8 +114,6 @@
                     { extend: 'copy', className: 'btn btn-success' },
                     { extend: 'excel', className: 'btn btn-primary' }
                    
-
-
                 ]
             },
 

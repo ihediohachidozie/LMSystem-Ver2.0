@@ -8,6 +8,7 @@ use DB;
 use App\PublicHoliday;
 use App\Department;
 use App\Category;
+use App\Comment;
 use App\Mail\LeaveApprovalMail;
 use App\Mail\ConfirmRequest;
 use Illuminate\Support\Facades\Mail;
@@ -118,8 +119,9 @@ class LeaveController extends Controller
                     $userdata = User::Find(auth()->id());
                     
                     $email = User::where('id', $leave->approval_id)->pluck('email');
+                    $when = now()->addMinutes(10);
 
-                    Mail::to($email)->queue(new LeaveApprovalMail($userdata));
+                    Mail::to($email)->later($when, new LeaveApprovalMail($userdata));
                     
                     return redirect('leave')->withStatus(__('Leave Application successfully saved.'));
                 }
@@ -132,7 +134,7 @@ class LeaveController extends Controller
             }
         }
         else{
-            return redirect('leave')->withStatus(__('You have either a pending or rejected Leave Application.'));
+            return redirect('leave')->withStatus(__('You have either an open or pending or rejected Leave Application.'));
         }
     }
 
@@ -187,14 +189,29 @@ class LeaveController extends Controller
         $leave = Leave::findorfail($request->leave);
       
         $leave->update($data);
+        $lastID = $leave->id;
+
+        // save comments ...
+        if($comment)
+        {
+            $saveCom = new Comment();
+            $saveCom->user_id = $leave->user_id;
+            $saveCom->approval_id = $leave->approval_id;
+            $saveCom->leave_id = $lastID;
+            $saveCom->comment = $comment;
+
+            $saveCom->save();
+        }
+
 
         // send an email to user & admin...
 
         $userdata = User::Find($leave->approval_id);
 
         $userdata1 = User::Find($leave->user_id);
+        $when = now()->addMinutes(10);
  
-        Mail::to($userdata1->email)->cc('hr.cal@ecmterminals.com')->queue(new ConfirmRequest($userdata, $leave, $comment));
+        Mail::to($userdata1->email)->cc('hr.cal@ecmterminals.com')->later($when, new ConfirmRequest($userdata, $leave, $comment));
 
         if(auth()->id() == 1)
         {
@@ -244,8 +261,9 @@ class LeaveController extends Controller
                 $userdata = User::Find(auth()->id());
                     
                 $email = User::where('id', $leave->approval_id)->pluck('email');
+                $when = now()->addMinutes(10);
 
-                Mail::to($email)->queue(new LeaveApprovalMail($userdata));
+                Mail::to($email)->later($when, new LeaveApprovalMail($userdata));
     
                 return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
             }
@@ -263,8 +281,9 @@ class LeaveController extends Controller
                     $userdata = User::Find(auth()->id());
                     
                     $email = User::where('id', $leave->approval_id)->pluck('email');
+                    $when = now()->addMinutes(10);
 
-                    Mail::to($email)->queue(new LeaveApprovalMail($userdata));
+                    Mail::to($email)->later($when, new LeaveApprovalMail($userdata));
         
                     return redirect('leave')->withStatus(__('Leave Application successfully updated.'));
                 }
@@ -504,10 +523,17 @@ class LeaveController extends Controller
 
      public function allUsersum()
      {
-         // retrieve all users' summmary for HOD
-       $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.year','leaves.days', 'leaves.user_id', DB::raw('sum(days) as days, sum(outsdays) as odays'))->where('status', '=', 3)->groupBy('year', 'user_id')->paginate(5);
+         // retrieve all users' summmary for Admin
+       $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.year','leaves.days', 'leaves.user_id','leaves.approval_id', DB::raw('sum(days) as days, sum(outsdays) as odays'))->where('status', '=', 3)->groupBy('year', 'user_id')->paginate(5);
        return view('leave.allsummary', compact('leaves'));
      }
+    
+    /*  public function allUsersumAp()
+            {
+                // retrieve all users' summmary for HOD
+            $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.year','leaves.days', 'leaves.user_id', 'leaves.approval_id', DB::raw('sum(days) as days, sum(outsdays) as odays'))->where('status', '=', 3)->groupBy('year', 'user_id')->paginate(5);
+            return view('leave.allsummary', compact('leaves'));
+            } */
 
         /*      public function chgstatus(Leave $leave)
             {

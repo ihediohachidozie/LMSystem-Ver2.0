@@ -24,12 +24,16 @@
                     </thead>
                     <tbody>
                         @foreach ($leaves as $leave)
+                            @if ($leave->approval_id == auth()->id() or auth()->id() == 1)
                                 <tr>
                                     <td>{{$leave->firstname}}</td>                                   
                                     <td class="text-center">{{$leave->year}}</td> 
                                     <td class="text-center">{{$leave->days}}</td>
                                     <td class="text-center"> @include('leave.outs2')</td>  
                                 </tr>
+                                
+                            @endif
+
                         @endforeach 
                         <tfoot>
                             <tr>

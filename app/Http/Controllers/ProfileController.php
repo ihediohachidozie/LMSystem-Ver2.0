@@ -104,17 +104,18 @@ class ProfileController extends Controller
                 'password' => 'required|confirmed|min:6|different:current_password',
                 'password_confirmation' => 'required',
             ]);
-    
+
     
             if(Hash::check($request->get('current_password'), $user->password)){
                 $data = ['password' => Hash::make($request->get('password'))];
 
                 $msg = 'Password successfully changed.';
+                $user->update($data);
             }
             else{
                 $msg = 'Invalid current password entered!';
             }
-            
+             
         }
         else
         {
@@ -123,16 +124,13 @@ class ProfileController extends Controller
             ]); 
                   
 
-    
             $msg ='Profile Image uploaded successfully.';
             
+            $user->update($data);
+            $this->storeImage();
 
-           //return back()->withStatus(__($msg)); 
         }
-      //  dd($data);
-        
-        $user->update($data);
-        $this->storeImage();
+          
 
         return back()->withStatus(__($msg)); 
     }

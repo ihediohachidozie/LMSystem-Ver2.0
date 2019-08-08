@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Leave;
 use App\User;
 use App\Department;
+use App\Comment;
 use App\Category;
 
 use Illuminate\Http\Request;
@@ -29,11 +30,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = User::all()->count();
+        $users = User::where('id', '<>', '1')->count();
         $departments = Department::all()->count();
         $leaves = Leave::where('status', '=', '2')->count();
         $pending = Leave::where(['user_id' => auth()->id(), 'status' => '1'])->count();
         $request = Leave::where(['approval_id' => auth()->id(), 'status' => '1'])->count();
-        return view('home', compact('pending', 'users', 'leaves', 'request', 'departments'));
+        $comments = Comment::where('user_id', auth()->id())->orderBy('id', 'DESC')->get();
+        return view('home', compact('pending', 'users', 'comments', 'request', 'departments'));
     }
 }

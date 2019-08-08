@@ -106,8 +106,10 @@ class UsersController extends Controller
                 $user->update($data);
 
                 // send an email to the user
+
+                $when = now()->addMinutes(10);
  
-                Mail::to($user->email)->queue(new UserActivation($user));
+                Mail::to($user->email)->later($when, new UserActivation($user));
     
                 return redirect('users')->withStatus(__('User data successfully updated.'));
             }

@@ -89,8 +89,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         // $header = 'register';
+        $when = now()->addMinutes(10);
            
-        Mail::to('hr.cal@ecmterminals.com')->send(new UserRegisterMail($userdata));
+        Mail::to('hr.cal@ecmterminals.com')->later($when, new UserRegisterMail($userdata));
 
         return $userdata;
     }
