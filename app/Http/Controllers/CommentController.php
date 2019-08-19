@@ -69,7 +69,14 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        // update the status of a comment
+
+        $comment->status = request('status');
+
+        $comment->update();
+
+        return back();
+
     }
 
     /**

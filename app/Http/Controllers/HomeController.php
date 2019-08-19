@@ -35,7 +35,7 @@ class HomeController extends Controller
         $leaves = Leave::where('status', '=', '2')->count();
         $pending = Leave::where(['user_id' => auth()->id(), 'status' => '1'])->count();
         $request = Leave::where(['approval_id' => auth()->id(), 'status' => '1'])->count();
-        $comments = Comment::where('user_id', auth()->id())->orderBy('id', 'DESC')->get();
+        $comments = Comment::where(['user_id' => auth()->id(), 'status' => '0'])->orderBy('id', 'DESC')->Take(1)->get();
         return view('home', compact('pending', 'users', 'comments', 'request', 'departments'));
     }
 }

@@ -1,6 +1,6 @@
-@extends('layouts.inc.head')
+@include('layouts.inc.head')
+<body class="bg-gradient-primary mt-5">
 
-@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -62,4 +62,4 @@
         </div>
     </div>
 </div>
-@endsection
+</body>

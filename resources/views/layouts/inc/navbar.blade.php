@@ -48,7 +48,10 @@
         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-envelope fa-fw"></i>
           <!-- Counter - Messages -->
-          <span class="badge badge-danger badge-counter"> {{ $comments->count() }}</span>
+          @if ($comments->count())
+              <span class="badge badge-danger badge-counter"> {{ $comments->count() }}</span>
+          @endif
+          
         </a>
         <!-- Dropdown - Messages -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
@@ -59,12 +62,22 @@
             <a class="dropdown-item d-flex align-items-center" href="#">
               @include('layouts.inc.getImage')
               <div class="font-weight-bold">
-                <div class="text-truncate">{{$comment->comment}}</div>
+                <div class="text">{{$comment->comment}}</div>
                 <div class="small text-gray-500">@include('layouts.inc.getname')</div>
               </div>
             </a>
+            <form id="clear-comment" action="{{route('comment.update', ['comment' => $comment])}}" method="post">
+              @csrf
+              @method('PATCH')
+              <input type="hidden" name="status" value="1">
+            
+            </form>
           @endforeach
-          <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+          <a class="dropdown-item text-center small text-gray-500" href="#" 
+            onclick="event.preventDefault(); 
+            document.getElementById('clear-comment').submit();"> 
+            Clear Message
+          </a>
         </div>
       </li>
         
@@ -75,7 +88,7 @@
 
 
 
-            <div class="topbar-divider d-none d-sm-block"></div>                  
+    <div class="topbar-divider d-none d-sm-block"></div>                  
                
 
 
