@@ -32,7 +32,7 @@ class ConfirmRequest extends Mailable
      */
     public function build()
     {
-         // return $this->from($this->userdata->email)->subject('LMSystem App: Leave Approval Confirmation')->view('email.confirm');
-       return $this->from("test@test.com")->subject('LMSystem App: Leave Approval Confirmation')->view('email.confirm');
+        return $this->from($this->userdata->email)->subject('LMSystem App: Leave Approval Confirmation')->view('email.confirm');
+      // return $this->from("test@test.com")->subject('LMSystem App: Leave Approval Confirmation')->view('email.confirm');
     }
 }

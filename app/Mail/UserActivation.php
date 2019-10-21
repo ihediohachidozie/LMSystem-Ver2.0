@@ -30,7 +30,7 @@ class UserActivation extends Mailable
      */
     public function build()
     {
-         // return $this->from($this->user->email)->subject('LMSystem App: User Activated')->view('email.activate');
-       return $this->from("test@test.com")->subject('LMSystem App: User Activated')->view('email.activate');
+        return $this->from($this->user->email)->subject('LMSystem App: User Activated')->view('email.activate');
+       //return $this->from("test@test.com")->subject('LMSystem App: User Activated')->view('email.activate');
     }
 }

@@ -30,8 +30,8 @@ class UserRegisterMail extends Mailable
      */
     public function build()
     {
-        //return $this->from($this->userdata->email)->subject('LMSystem App: User Registration')->view('email.register');
-        return $this->from("test@test.com")->subject('LMSystem App: User Registration')->view('email.register');
+        return $this->from($this->userdata->email)->subject('LMSystem App: User Registration')->view('email.register');
+        //return $this->from("test@test.com")->subject('LMSystem App: User Registration')->view('email.register');
         
     }
 }
