@@ -60,11 +60,12 @@ class LeaveController extends Controller
         $u = User::find(auth()->user()->id)->category;
 
         $users = DB::table('users')
-        ->whereNotIn('id', [auth()->id(), 1])
+        ->whereNotIn('id', [auth()->user()->id, 1])
         ->get();
 
         $approvals = DB::table('users')
                     ->where('permission', '=', 'on')
+                    ->whereNotIn('id',[auth()->user()->id])
                     ->get();
 
         $leaveTypes = $this->leaveType();

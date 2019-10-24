@@ -57,7 +57,7 @@
                 @endforeach    
             </select>
             <div class="text-danger">{{ $errors->first('duty_reliever') }}</div>
-        </div>
+        </div>  
     </div>
     <div class="col-md-4">
         <div class="form-group">
