@@ -94,7 +94,7 @@ class ProfileController extends Controller
                 'email' => 'required',
                 'department_id' => 'required',
             ]);
-
+            $user->update($data);
             $msg = 'Profile data successfully updated.';
         }
         elseif($request->profile == 'password')

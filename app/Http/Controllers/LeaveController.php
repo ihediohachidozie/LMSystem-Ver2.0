@@ -212,7 +212,7 @@ class LeaveController extends Controller
         $userdata1 = User::Find($leave->user_id);
         $when = now()->addMinutes(10);
  
-        Mail::to($userdata1->email)->cc('hr.cal@ecmterminals.com')->later($when, new ConfirmRequest($userdata, $leave, $comment));
+        Mail::to($userdata1->email)->cc('hr.cal@ecmterminals.com')->later($when, new ConfirmRequest($userdata, $userdata1, $leave, $comment));
 
         if(auth()->id() == 1)
         {
