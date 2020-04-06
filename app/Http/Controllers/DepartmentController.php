@@ -87,7 +87,7 @@ class DepartmentController extends Controller
     {
         if(auth()->id() == 1)
         {
-              return view('department.edit', compact('department'));
+            return view('department.edit', compact('department'));
         }
         return back();
     }

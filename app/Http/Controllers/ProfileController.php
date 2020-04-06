@@ -27,6 +27,7 @@ class ProfileController extends Controller
        // dd(auth()->id());
        $departments = Department::all();
         $user = User::find(auth()->id());
+       // dd($user);
         return view('profile.edit', compact('user', 'departments'));
     }
 

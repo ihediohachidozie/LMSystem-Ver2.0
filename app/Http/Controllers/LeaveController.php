@@ -33,7 +33,7 @@ class LeaveController extends Controller
     public function index()
     {
         //
-        $leaves = Leave::orderBy('id', 'desc')->paginate(10);
+        $leaves = Leave::where('user_id', auth()->id())->orderBy('id', 'desc')->paginate(10);
 
         $leaveTypes = $this->leaveType();
 
@@ -41,6 +41,7 @@ class LeaveController extends Controller
 
         $publicholidays = PublicHoliday::all()->pluck('date');
         
+       // dd($leaves);
         return view('leave.index', compact('leaves','leaveTypes','users', 'publicholidays'));
     }
 
@@ -356,11 +357,13 @@ class LeaveController extends Controller
      public function approval()
      {
          
-         $leaves = Leave::leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname', 'leaves.*')->orderBy('id', 'desc')->paginate(8);
+         //$leaves = Leave::leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname', 'leaves.*')->orderBy('id', 'desc')->paginate(8);
+         $leaves = Leave::leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname', 'leaves.*')->where([['leaves.status', '>', 0],['approval_id', '=', auth()->id()]])->orderBy('id', 'desc')->paginate(8);
          $leaveTypes = $this->leaveType();
          $users = User::all();
          $publicholidays = PublicHoliday::all()->pluck('date');
        // $userid = Auth::user()->id;
+      // dd($leaves);
          return view('leave.approval', compact('leaves','leaveTypes','users', 'publicholidays')); 
      }
  
@@ -525,7 +528,8 @@ class LeaveController extends Controller
      public function allUsersum()
      {
          // retrieve all users' summmary for Admin
-       $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.year','leaves.days', 'leaves.user_id','leaves.approval_id', DB::raw('sum(days) as days, sum(outsdays) as odays'))->where('status', '=', 3)->groupBy('year', 'user_id')->paginate(5);
+       $leaves = DB::table('leaves')->leftJoin('users', 'users.id', '=', 'leaves.user_id')->select('users.firstname','leaves.year','leaves.days', 'leaves.user_id','leaves.approval_id', DB::raw('sum(days) as days, sum(outsdays) as odays'))->where('status', '=', 3)->groupBy('year', 'user_id')->paginate(10);
+      // dd($leaves);
        return view('leave.allsummary', compact('leaves'));
      }
     

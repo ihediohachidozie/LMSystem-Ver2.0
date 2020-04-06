@@ -39,8 +39,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($leaves as $leave)
-                            @if ($leave->approval_id == auth()->user()->id and $leave->status <> 'Open')
+                    @foreach ($leaves as $leave)  
+                            @if ($leave->approval_id == auth()->user()->id and $leave->status != 'Open')
                                 <tr>
                                     <td>{{$leave->firstname}}</td>
                                     <td>

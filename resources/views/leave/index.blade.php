@@ -39,9 +39,9 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>  
                         @foreach ($leaves as $leave)
-                            @if ($leave->user_id == auth()->id())
+                         {{--    @if ($leave->user_id == auth()->id()) --}}
                                 <tr>
                                     <td>
                                         @if ($leave->status == 'Pending' or $leave->status == 'Approved')
@@ -83,9 +83,9 @@
                                     </td>
                                     <td>{{$leave->status}}</td>
                                 </tr>
-                            @else
+        {{--                     @else
                                 
-                            @endif
+                            @endif --}}
 
                         @endforeach  
                     </tbody>

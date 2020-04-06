@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                         @foreach ($leaves as $leave)
-                            @if ($leave->approval_id == auth()->id() or auth()->id() == 1)
+                            @if ($leave->approval_id == auth()->user()->id or auth()->id() == 1)
                                 <tr>
                                     <td>{{$leave->firstname}}</td>                                   
                                     <td class="text-center">{{$leave->year}}</td> 

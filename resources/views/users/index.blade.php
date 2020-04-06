@@ -27,6 +27,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Username</th>
                         <th>Staff Id</th>
                         <th colspan="3" class="text-center">Actions</th>
                     </tr>
@@ -35,6 +36,7 @@
                     @foreach($users as $user)
                         <tr>
                             <td>{{$user->firstname}} {{ ' ' }} {{$user->lastname}}</td>
+                            <td>{{ $user->username }}</td>
                             <td>{{$user->staff_id}}</td>
                             <td class="text-center"><a href="{{ route('users.edit', ['user'=>$user]) }}" class="btn btn-primary btn-circle"><i class="fas fa-edit" style="font-size:24px"></i></a></td>         
                             <td class="text-center">

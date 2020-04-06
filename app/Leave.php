@@ -16,7 +16,7 @@ class Leave extends Model
             2 => 'Rejected',
             3 => 'Approved'
         ][$attribute];
-    }  
+    }    
 
     public function User()
     {
